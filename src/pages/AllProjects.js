@@ -1,6 +1,7 @@
 // src/pages/AllProjects.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom'; // Import Link for navigation
 import { API_BASE_URL } from '../config';
 
 const AllProjects = () => {
@@ -9,13 +10,13 @@ const AllProjects = () => {
 
   useEffect(() => {
     const fetchProjects = async () => {
-        const accessToken = localStorage.getItem('access_token'); // Retrieve the access token
-        
+      const accessToken = localStorage.getItem('access_token'); // Retrieve the access token
+      
       try {
         const response = await axios.get(`${API_BASE_URL}/project/projects/`, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`, // Include the access token
-              },
+          headers: {
+            Authorization: `Bearer ${accessToken}`, // Include the access token
+          },
         });
         setProjects(response.data);
       } catch (error) {
@@ -36,6 +37,7 @@ const AllProjects = () => {
             <th>Description</th>
             <th>Status</th>
             <th>Priority</th>
+            <th>Actions</th> {/* Add a column for actions */}
           </tr>
         </thead>
         <tbody>
@@ -45,6 +47,11 @@ const AllProjects = () => {
               <td>{project.description}</td>
               <td>{project.status}</td>
               <td>{project.priority}</td>
+              <td>
+                <Link to={`/project/projects/update/${project.id}`} className="btn btn-primary">
+                  Edit Project
+                </Link>
+              </td>
             </tr>
           ))}
         </tbody>
